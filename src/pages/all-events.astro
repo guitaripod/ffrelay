@@ -1,0 +1,231 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import { fetchAllEventData, parseRunData, parseSplitsData } from '../lib/googleSheets';
+
+const eventData = await fetchAllEventData();
+
+function calculateTeamTotals(splits) {
+  const totals = { mog: 0, choco: 0, tonberry: 0 };
+  
+  const parsedSplits = parseSplitsData(splits);
+  parsedSplits.forEach(split => {
+    if (split.type === 'game' && split.mogTime && split.chocoTime && split.tonberryTime) {
+      const parseTime = (timeStr) => {
+        if (!timeStr || timeStr === '#DIV/0!' || timeStr === '') return 0;
+        const parts = timeStr.split(':').map(Number);
+        if (parts.length === 3) {
+          return parts[0] * 3600 + parts[1] * 60 + parts[2];
+        } else if (parts.length === 2) {
+          return parts[0] * 60 + parts[1];
+        }
+        return 0;
+      };
+
+      totals.mog += parseTime(split.mogTime);
+      totals.choco += parseTime(split.chocoTime);
+      totals.tonberry += parseTime(split.tonberryTime);
+    }
+  });
+  
+  return totals;
+}
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function getWinner(totals) {
+  if (totals.mog === 0 && totals.choco === 0 && totals.tonberry === 0) return 'No data';
+  const min = Math.min(totals.mog || Infinity, totals.choco || Infinity, totals.tonberry || Infinity);
+  if (min === totals.mog) return 'Team Mog';
+  if (min === totals.choco) return 'Team Choco';
+  return 'Team Tonberry';
+}
+---
+
+<Layout title="All FF Relay Events">
+  <Navigation />
+  
+  <main>
+    <div class="container">
+      <h1>All Final Fantasy Relay Events</h1>
+      
+      <div class="current-event">
+        <h2>Current Event: Final Fantasy Series Relay Race X</h2>
+        <p>View the <a href="/">live dashboard</a> for real-time updates!</p>
+      </div>
+
+      <div class="past-events">
+        <h2>Past Events</h2>
+        <div class="events-grid">
+          {eventData.pastEvents?.map(event => {
+            const totals = event.data?.splits ? calculateTeamTotals(event.data.splits) : { mog: 0, choco: 0, tonberry: 0 };
+            const winner = getWinner(totals);
+            const hasData = totals.mog > 0 || totals.choco > 0 || totals.tonberry > 0;
+            
+            return (
+              <div class="event-card">
+                <h3>{event.name}</h3>
+                {hasData ? (
+                  <>
+                    <div class="winner">
+                      <strong>Winner:</strong> {winner}
+                    </div>
+                    <div class="times">
+                      <div class="team-time mog">
+                        <span class="team-name">Team Mog:</span>
+                        <span class="time">{formatTime(totals.mog)}</span>
+                      </div>
+                      <div class="team-time choco">
+                        <span class="team-name">Team Choco:</span>
+                        <span class="time">{formatTime(totals.choco)}</span>
+                      </div>
+                      <div class="team-time tonberry">
+                        <span class="team-name">Team Tonberry:</span>
+                        <span class="time">{formatTime(totals.tonberry)}</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <p class="no-data">Results data not available</p>
+                )}
+                <a href={event.url} target="_blank" rel="noopener noreferrer" class="view-sheet">
+                  View Full Spreadsheet →
+                </a>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    padding: 2rem 0;
+    min-height: 80vh;
+  }
+
+  h1 {
+    color: var(--color-accent);
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .current-event {
+    background: rgba(212, 175, 55, 0.1);
+    border: 2px solid var(--color-accent);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .current-event h2 {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .current-event a {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .past-events h2 {
+    color: var(--color-accent);
+    margin-bottom: 2rem;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .event-card {
+    background: var(--color-surface);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-accent);
+  }
+
+  .event-card h3 {
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  .winner {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 6px;
+  }
+
+  .times {
+    margin-bottom: 1rem;
+  }
+
+  .team-time {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .team-time:last-child {
+    border-bottom: none;
+  }
+
+  .team-name {
+    font-weight: 600;
+  }
+
+  .time {
+    font-family: monospace;
+  }
+
+  .mog .team-name { color: #ff6b6b; }
+  .choco .team-name { color: #4ecdc4; }
+  .tonberry .team-name { color: #95e1d3; }
+
+  .no-data {
+    text-align: center;
+    opacity: 0.7;
+    font-style: italic;
+    margin: 2rem 0;
+  }
+
+  .view-sheet {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+  }
+
+  .view-sheet:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

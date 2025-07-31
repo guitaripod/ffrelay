@@ -1,0 +1,131 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CompactDashboard from '../components/CompactDashboard.astro';
+import LiveDashboard from '../components/LiveDashboard';
+import PastEvents from '../components/PastEvents.astro';
+---
+
+<Layout title="FF Series Relay Race X - Live Dashboard">
+  <style is:global>
+    :root {
+      --color-primary: #1a1f36;
+      --color-secondary: #2a3f5f;
+      --color-accent: #d4af37;
+      --color-text: #e8e6e3;
+      --color-background: #0a0e1a;
+      --color-surface: #151b2e;
+      --color-mog: #ff6b6b;
+      --color-choco: #4ecdc4;
+      --color-tonberry: #95e1d3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--color-text);
+      background: var(--color-background);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 0;
+    }
+
+    .container {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+  <main class="compact-layout">
+    <CompactDashboard />
+    <div class="live-data-container">
+      <LiveDashboard client:load />
+    </div>
+    
+    <details class="past-events-section">
+      <summary>Past Events Archive</summary>
+      <div class="past-events-grid">
+        <a href="https://bit.ly/ffrelay1" target="_blank">Relay I</a>
+        <a href="https://bit.ly/ffrelay2" target="_blank">Relay II</a>
+        <a href="https://bit.ly/ffrelay3" target="_blank">Relay III</a>
+        <a href="https://bit.ly/ffrelay4" target="_blank">Relay IV</a>
+        <a href="https://bit.ly/ffrelay4interlude" target="_blank">Relay IV - Interlude</a>
+        <a href="https://bit.ly/ffrelay5" target="_blank">Relay V</a>
+        <a href="https://bit.ly/ffrelay6" target="_blank">Relay VI</a>
+        <a href="https://bit.ly/ffrelay7" target="_blank">Relay VII</a>
+        <a href="https://bit.ly/ffrelay8" target="_blank">Relay VIII</a>
+        <a href="https://bit.ly/ffrelay9" target="_blank">Relay IX</a>
+      </div>
+    </details>
+  </main>
+</Layout>
+
+<style>
+  .compact-layout {
+    min-height: 100vh;
+    background: var(--color-background);
+  }
+
+  .live-data-container {
+    padding: 1rem;
+  }
+
+  .past-events-section {
+    margin: 1rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+  }
+
+  .past-events-section summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.875rem;
+  }
+
+  .past-events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .past-events-grid a {
+    padding: 0.5rem;
+    background: rgba(26, 31, 54, 0.5);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.875rem;
+    transition: background 0.2s;
+  }
+
+  .past-events-grid a:hover {
+    background: rgba(212, 175, 55, 0.2);
+  }
+</style>
