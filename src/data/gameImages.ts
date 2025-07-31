@@ -1,3 +1,5 @@
+const BASE_URL = import.meta.env.BASE_URL || '/';
+
 export const gameImages: Record<string, string> = {
   'Final Fantasy I': '/images/games/ff1.png',
   'Final Fantasy II': '/images/games/ff2.png',
@@ -72,8 +74,9 @@ export const gameImages: Record<string, string> = {
 };
 
 export function getGameImage(gameName: string): string {
-  if (gameImages[gameName]) {
-    return gameImages[gameName];
+  const imagePath = gameImages[gameName];
+  if (imagePath) {
+    return `${BASE_URL}${imagePath.startsWith('/') ? imagePath.slice(1) : imagePath}`;
   }
   
   // Remove platform/category suffixes to find base game name
@@ -106,16 +109,18 @@ export function getGameImage(gameName: string): string {
     .replace(/\s*\(PC Cadet\)\s*/i, '')
     .trim();
   
-  if (gameImages[cleanedGameName]) {
-    return gameImages[cleanedGameName];
+  const cleanedImagePath = gameImages[cleanedGameName];
+  if (cleanedImagePath) {
+    return `${BASE_URL}${cleanedImagePath.startsWith('/') ? cleanedImagePath.slice(1) : cleanedImagePath}`;
   }
   
   const lowerGameName = cleanedGameName.toLowerCase();
   for (const [key, value] of Object.entries(gameImages)) {
     if (lowerGameName.includes(key.toLowerCase()) || key.toLowerCase().includes(lowerGameName)) {
-      return value;
+      return `${BASE_URL}${value.startsWith('/') ? value.slice(1) : value}`;
     }
   }
   
-  return gameImages['default'];
+  const defaultPath = gameImages['default'];
+  return `${BASE_URL}${defaultPath.startsWith('/') ? defaultPath.slice(1) : defaultPath}`;
 }
