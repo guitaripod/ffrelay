@@ -635,7 +635,11 @@ function formatExcelDate(value: any): string {
     return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   }
   if (typeof value === 'string') {
-    return value.replace(/^\d+\s*/, '').replace(/^@\s*/, '').trim();
+    // Remove leading numbers and @ symbols, then remove seconds if present
+    let cleaned = value.replace(/^\d+\s*/, '').replace(/^@\s*/, '').trim();
+    // Remove :00 seconds from time format (e.g., "09:00:00" -> "09:00")
+    cleaned = cleaned.replace(/(\d{1,2}:\d{2}):\d{2}/, '$1');
+    return cleaned;
   }
   return value?.toString() || '';
 }
