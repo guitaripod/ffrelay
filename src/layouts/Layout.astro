@@ -1,0 +1,118 @@
+---
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Final Fantasy Series Relay Race X - A relay race between 3 teams of speedrunners across 20 Final Fantasy Games!" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --color-primary: #1a1f36;
+    --color-secondary: #2a3f5f;
+    --color-accent: #d4af37;
+    --color-text: #e8e6e3;
+    --color-background: #0a0e1a;
+    --color-surface: #151b2e;
+    --color-mog: #ff6b6b;
+    --color-choco: #4ecdc4;
+    --color-tonberry: #95e1d3;
+    --color-gradient-start: #667eea;
+    --color-gradient-end: #764ba2;
+    --font-display: 'Cinzel', serif;
+    --font-body: 'Crimson Text', serif;
+    --spacing-unit: 1rem;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background: var(--color-background);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: calc(var(--spacing-unit) * 1.5);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--color-accent);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: #f4d03f;
+    text-decoration: underline;
+  }
+
+  p {
+    margin-bottom: var(--spacing-unit);
+    font-size: 1.125rem;
+  }
+
+  section {
+    padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 2);
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 calc(var(--spacing-unit) * 2);
+  }
+
+  @media (max-width: 768px) {
+    section {
+      padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
+    }
+  }
+</style>
