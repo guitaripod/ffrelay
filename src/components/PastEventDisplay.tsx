@@ -103,9 +103,9 @@ export default function PastEventDisplay({ name, sheetId }: PastEventProps) {
                   <>
                     <p><strong>Winner:</strong> {winner}</p>
                     <div style={{ marginTop: '0.5rem' }}>
-                      <p style={{ color: '#ff6b6b' }}>Team Mog: {formatTime(totals.mog)}</p>
-                      <p style={{ color: '#4ecdc4' }}>Team Choco: {formatTime(totals.choco)}</p>
-                      <p style={{ color: '#95e1d3' }}>Team Tonberry: {formatTime(totals.tonberry)}</p>
+                      <p style={{ color: '#6B7BED' }}>Team Mog: {formatTime(totals.mog)}</p>
+                      <p style={{ color: '#E94B9C' }}>Team Choco: {formatTime(totals.choco)}</p>
+                      <p style={{ color: '#4CAF50' }}>Team Tonberry: {formatTime(totals.tonberry)}</p>
                     </div>
                   </>
                 );
