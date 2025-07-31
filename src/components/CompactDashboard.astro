@@ -1,0 +1,283 @@
+---
+
+---
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>FF Series Relay Race X</h1>
+    <div class="event-info">
+      <span>Aug 1-4, 2025</span>
+      <span class="separator">|</span>
+      <span>9am EDT / 3pm CEST / 10pm JST</span>
+      <span class="separator">|</span>
+      <a href="http://twitch.tv/RPGLimitBreak" target="_blank">Watch Live</a>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card standings-card">
+      <h3>Current Standings</h3>
+      <div class="standings">
+        <div class="team-standing">
+          <span class="team-name mog">Team Mog</span>
+          <span class="team-time">--:--:--</span>
+        </div>
+        <div class="team-standing">
+          <span class="team-name choco">Team Choco</span>
+          <span class="team-time">--:--:--</span>
+        </div>
+        <div class="team-standing">
+          <span class="team-name tonberry">Team Tonberry</span>
+          <span class="team-time">--:--:--</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card current-run-card">
+      <h3>Current Run</h3>
+      <div class="current-run">
+        <div class="game-title">Waiting for event start...</div>
+        <div class="runners-grid">
+          <div class="runner mog">
+            <span class="team-label">Mog</span>
+            <span class="runner-name">-</span>
+          </div>
+          <div class="runner choco">
+            <span class="team-label">Choco</span>
+            <span class="runner-name">-</span>
+          </div>
+          <div class="runner tonberry">
+            <span class="team-label">Tonberry</span>
+            <span class="runner-name">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card schedule-card">
+      <h3>Full Schedule</h3>
+      <div class="table-container" id="schedule-table">
+      </div>
+    </div>
+
+    <div class="card splits-card">
+      <h3>Live Splits</h3>
+      <div class="table-container" id="splits-table">
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-links">
+    <a href="https://bit.ly/ffrelay" target="_blank">Series Info</a>
+    <span>|</span>
+    <a href="#past-events">Past Events</a>
+    <span>|</span>
+    <a href="https://www.twitch.tv/japanese_restream" target="_blank">JP Stream</a>
+  </div>
+</div>
+
+<style>
+  .dashboard-container {
+    min-height: 100vh;
+    background: #0a0e1a;
+    color: #e8e6e3;
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d4af37;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .event-info {
+    font-size: 0.875rem;
+    color: #a0a0a0;
+  }
+
+  .event-info .separator {
+    margin: 0 0.5rem;
+    color: #555;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    background: #151b2e;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #d4af37;
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .standings {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .team-standing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(26, 31, 54, 0.5);
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+
+  .team-name {
+    font-weight: 600;
+  }
+
+  .team-name.mog { color: #ff6b6b; }
+  .team-name.choco { color: #4ecdc4; }
+  .team-name.tonberry { color: #95e1d3; }
+
+  .current-run .game-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #d4af37;
+    margin-bottom: 0.75rem;
+  }
+
+  .runners-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .runner {
+    background: rgba(26, 31, 54, 0.5);
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .runner .team-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .runner.mog .team-label { color: #ff6b6b; }
+  .runner.choco .team-label { color: #4ecdc4; }
+  .runner.tonberry .team-label { color: #95e1d3; }
+
+  .runner .runner-name {
+    font-size: 0.875rem;
+  }
+
+  .schedule-card,
+  .splits-card {
+    grid-column: 1 / -1;
+  }
+
+  .table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 0.75rem;
+  }
+
+  .quick-links {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .quick-links a {
+    color: #d4af37;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+
+  .quick-links a:hover {
+    text-decoration: underline;
+  }
+
+  @media (min-width: 768px) {
+    .dashboard-container {
+      padding: 1.5rem;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+    }
+
+    .dashboard-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .standings-card,
+    .current-run-card {
+      min-height: 200px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .dashboard-container {
+      padding: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .dashboard-grid {
+      grid-template-columns: 300px 300px 1fr;
+    }
+
+    .schedule-card {
+      grid-column: 3;
+      grid-row: 1 / 3;
+    }
+
+    .splits-card {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+  }
+
+  .table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .table-container::-webkit-scrollbar-track {
+    background: rgba(26, 31, 54, 0.5);
+  }
+
+  .table-container::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.5);
+    border-radius: 3px;
+  }
+
+  .table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.7);
+  }
+</style>

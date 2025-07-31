@@ -1,0 +1,463 @@
+.liveDashboard {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  min-height: 600px;
+}
+
+.dashboardControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: rgba(26, 31, 54, 0.5);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+
+.lastUpdate {
+  margin-left: auto;
+  color: #888;
+}
+
+.standingsDisplay {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.teamTotal {
+  background: rgba(26, 31, 54, 0.5);
+  padding: 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.teamLabel {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.teamTime {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.currentRunDisplay {
+  background: rgba(26, 31, 54, 0.8);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #d4af37;
+}
+
+.currentRunDisplay h4 {
+  margin: 0 0 0.5rem 0;
+  color: #d4af37;
+  font-size: 1rem;
+}
+
+.currentRunners {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.runnerInfo {
+  text-align: center;
+}
+
+.runnerInfo .team {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.runnerInfo .name {
+  display: block;
+  font-size: 0.875rem;
+}
+
+.compactTable {
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+
+.compactTable h4 {
+  margin: 0 0 0.5rem 0;
+  color: #d4af37;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.compactTable table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+}
+
+.compactTable th {
+  padding: 0.4rem 0.3rem;
+  background: rgba(26, 31, 54, 0.8);
+  font-weight: 600;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.compactTable td {
+  padding: 0.3rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.compactTable tr:hover {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.compactTable tr.current {
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.gameRow {
+  background: rgba(26, 31, 54, 0.4);
+  font-weight: 600;
+}
+
+.gameRow.collapsible {
+  cursor: pointer;
+  user-select: none;
+}
+
+.gameRow.collapsible:hover {
+  background: rgba(26, 31, 54, 0.6);
+}
+
+.collapseIcon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.gameName {
+  font-weight: 600;
+  color: #d4af37;
+  vertical-align: middle;
+}
+
+.splitName {
+  padding-left: 2rem;
+  font-size: 0.65rem;
+}
+
+.splitRow {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.mog { color: #ff6b6b; }
+.choco { color: #4ecdc4; }
+.tonberry { color: #95e1d3; }
+
+.runner {
+  font-size: 0.65rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.time, .split, .segment {
+  font-family: monospace;
+  font-size: 0.65rem;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+  color: #d4af37;
+}
+
+.pastEvents {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(26, 31, 54, 0.3);
+  border-radius: 4px;
+}
+
+.pastEvents h4 {
+  margin: 0 0 1rem 0;
+  color: #d4af37;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.pastEventItem {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.pastEventItem h5 {
+  margin: 0 0 0.5rem 0;
+  color: #d4af37;
+  font-size: 0.875rem;
+}
+
+.pastEventResults {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.gameCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gameIcon {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  flex-shrink: 0;
+}
+
+.runnerName {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.countryFlag {
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.unifiedTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.unifiedTable thead th {
+  padding: 0.5rem 0.3rem;
+  background: rgba(26, 31, 54, 0.9);
+  font-weight: 700;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-size: 0.75rem;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #d4af37;
+}
+
+.unifiedTable thead th:first-child {
+  text-align: left;
+}
+
+.gameInfoRow {
+  background: rgba(26, 31, 54, 0.6);
+  border-top: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.gameInfoRow.current {
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.runnersRow {
+  background: rgba(26, 31, 54, 0.4);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.runnersRow.current {
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.expandButton {
+  background: none;
+  border: none;
+  color: #d4af37;
+  cursor: pointer;
+  padding: 0 0.25rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.expandButton:hover {
+  transform: scale(1.2);
+}
+
+.estimatedTime {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.timeZone {
+  text-align: center;
+  font-size: 0.65rem;
+  font-family: monospace;
+}
+
+.commentary {
+  font-size: 0.65rem;
+  padding: 0.3rem;
+  vertical-align: middle;
+}
+
+.splitsHeaderRow td {
+  padding: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.splitsSubTable {
+  width: 100%;
+  font-size: 0.65rem;
+  margin: 0;
+}
+
+.splitsSubTable th {
+  padding: 0.3rem;
+  background: rgba(26, 31, 54, 0.6);
+  font-weight: 600;
+  font-size: 0.6rem;
+  text-align: center;
+}
+
+.gameTotalRow {
+  font-weight: 600;
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.splitDetailRow {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.splitDetailRow:hover {
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.clickableRow {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickableRow:hover {
+  background: rgba(212, 175, 55, 0.1) !important;
+}
+
+.splitsLabel {
+  font-size: 0.6rem;
+  color: #d4af37;
+  font-weight: normal;
+  margin-left: 0.25rem;
+}
+
+.commentatorsLabel {
+  font-weight: 600;
+  font-size: 0.65rem;
+  color: #d4af37;
+}
+
+.runnerLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.runnerLink:hover {
+  color: #d4af37;
+  text-decoration: underline;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(26, 31, 54, 0.8) 0%,
+    rgba(40, 48, 82, 0.8) 50%,
+    rgba(26, 31, 54, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonWave 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  display: inline-block;
+  opacity: 1 !important;
+  visibility: visible !important;
+  min-height: 10px;
+}
+
+.skeletonImage {
+  border-radius: 4px;
+}
+
+.skeletonContainer {
+  position: relative;
+}
+
+@keyframes skeletonWave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.liveDashboard {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .liveDashboard {
+    font-size: 0.75rem;
+  }
+  
+  .compactTable {
+    margin-bottom: 0.5rem;
+  }
+  
+  .standingsDisplay {
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .teamTotal {
+    padding: 0.5rem;
+  }
+  
+  .teamTime {
+    font-size: 1rem;
+  }
+  
+  .gameIcon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .unifiedTable table {
+    font-size: 0.65rem;
+  }
+  
+  .pastEvents {
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+}

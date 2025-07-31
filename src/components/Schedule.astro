@@ -1,0 +1,233 @@
+---
+import eventData from '../data/excel-data.json';
+
+const schedule = eventData.Schedule;
+const scheduleData = [];
+
+for (let i = 6; i < schedule.length - 1; i++) {
+  const row = schedule[i];
+  if (row[0] && row[0] !== '') {
+    const startEDT = row[2];
+    const startCEST = row[3];
+    const startJST = row[4];
+    
+    const formatTime = (excelTime) => {
+      if (typeof excelTime === 'string') {
+        return excelTime.replace(/^\d+\s*/, '').replace(/^@\s*/, '').trim();
+      }
+      if (typeof excelTime !== 'number') return excelTime;
+      const totalMinutes = Math.round(excelTime * 24 * 60);
+      const hours = Math.floor(totalMinutes / 60) % 24;
+      const minutes = totalMinutes % 60;
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      return `${displayHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    };
+
+    const formatDuration = (excelTime) => {
+      if (typeof excelTime !== 'number') return '';
+      const totalMinutes = Math.round(excelTime * 24 * 60);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+      }
+      return `${minutes}m`;
+    };
+
+    scheduleData.push({
+      game: row[0],
+      duration: formatDuration(row[1]),
+      startEDT: formatTime(startEDT),
+      startCEST: formatTime(startCEST),
+      startJST: formatTime(startJST)
+    });
+  }
+}
+---
+
+<section class="schedule-section">
+  <div class="container">
+    <h2>Predicted Schedule</h2>
+    <p class="schedule-note">Times will be updated as runs finish</p>
+    
+    <div class="timezone-tabs">
+      <button class="tz-tab active" data-tz="edt">EDT</button>
+      <button class="tz-tab" data-tz="cest">CEST</button>
+      <button class="tz-tab" data-tz="jst">JST</button>
+    </div>
+
+    <div class="schedule-grid">
+      {scheduleData.map((item, index) => (
+        <div class="schedule-item">
+          <div class="schedule-number">{index + 1}</div>
+          <h4 class="schedule-game">{item.game}</h4>
+          <div class="schedule-duration">{item.duration}</div>
+          <div class="schedule-times">
+            <div class="time-slot edt active">
+              <span class="tz-label">EDT</span>
+              <span class="time">{item.startEDT}</span>
+            </div>
+            <div class="time-slot cest">
+              <span class="tz-label">CEST</span>
+              <span class="time">{item.startCEST}</span>
+            </div>
+            <div class="time-slot jst">
+              <span class="tz-label">JST</span>
+              <span class="time">{item.startJST}</span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = document.querySelectorAll('.tz-tab');
+  const timeSlots = document.querySelectorAll('.time-slot');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tz = tab.dataset.tz;
+      
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      timeSlots.forEach(slot => {
+        if (slot.classList.contains(tz)) {
+          slot.classList.add('active');
+        } else {
+          slot.classList.remove('active');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .schedule-section {
+    background: var(--color-background);
+  }
+
+  .schedule-note {
+    text-align: center;
+    opacity: 0.8;
+    margin-bottom: calc(var(--spacing-unit) * 2);
+  }
+
+  .timezone-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+  }
+
+  .tz-tab {
+    padding: 0.75rem 2rem;
+    background: var(--color-surface);
+    border: 2px solid transparent;
+    border-radius: 50px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .tz-tab:hover {
+    border-color: var(--color-accent);
+  }
+
+  .tz-tab.active {
+    background: var(--color-accent);
+    color: var(--color-primary);
+  }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: calc(var(--spacing-unit) * 1.5);
+  }
+
+  .schedule-item {
+    background: var(--color-surface);
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    border-radius: 12px;
+    padding: calc(var(--spacing-unit) * 1.5);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .schedule-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+    border-color: var(--color-accent);
+  }
+
+  .schedule-number {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 30px;
+    height: 30px;
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--color-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .schedule-game {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-accent);
+    padding-right: 3rem;
+  }
+
+  .schedule-duration {
+    font-weight: 600;
+    opacity: 0.8;
+    margin-bottom: var(--spacing-unit);
+  }
+
+  .schedule-times {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .time-slot {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 8px;
+  }
+
+  .time-slot.active {
+    display: flex;
+  }
+
+  .tz-label {
+    font-weight: 600;
+    opacity: 0.7;
+    font-size: 0.875rem;
+  }
+
+  .time {
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .schedule-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

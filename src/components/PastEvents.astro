@@ -1,0 +1,150 @@
+---
+import eventData from '../data/excel-data.json';
+
+const info = eventData.Info;
+const pastEvents = [];
+
+for (let i = 25; i < info.length; i++) {
+  const row = info[i];
+  if (row[5] && row[5].includes('Relay') && row[6]) {
+    pastEvents.push({
+      name: row[5].replace(':', ''),
+      url: row[6]
+    });
+  }
+}
+---
+
+<section class="past-events">
+  <div class="container">
+    <h2>Past Relay Results</h2>
+    <div class="events-grid">
+      {pastEvents.map((event, index) => (
+        <a href={event.url} class="event-card" target="_blank" rel="noopener noreferrer">
+          <div class="event-number">{index + 1}</div>
+          <h3>{event.name}</h3>
+          <div class="event-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .past-events {
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-background) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .past-events::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .past-events h2 {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-unit) * 3);
+    position: relative;
+    z-index: 1;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--spacing-unit) * 2);
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-card {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    padding: calc(var(--spacing-unit) * 2);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    overflow: hidden;
+  }
+
+  .event-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.3);
+    border-color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .event-card:hover::before {
+    opacity: 1;
+  }
+
+  .event-card:hover .event-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .event-number {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background: var(--color-accent);
+    color: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .event-card h3 {
+    color: var(--color-text);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-unit);
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-arrow {
+    margin-top: auto;
+    color: var(--color-accent);
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-unit);
+    }
+  }
+</style>
