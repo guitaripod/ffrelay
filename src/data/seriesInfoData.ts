@@ -595,6 +595,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay I", games: ["FF12"] },
         { relayName: "Relay III", games: ["FF12"] },
         { relayName: "Relay IV", games: ["FF12"] },
+        { relayName: "Relay IV - Interlude", games: ["FF12"] },
         { relayName: "Relay V", games: ["FF12"] },
         { relayName: "Relay VI", games: ["FF13-2"] },
         { relayName: "Relay VII", games: ["FF3"] },
@@ -622,6 +623,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay I", games: ["FF7"] },
         { relayName: "Relay III", games: ["FF8"] },
         { relayName: "Relay IV", games: ["FF9"] },
+        { relayName: "Relay IV - Interlude", games: ["FF9"] },
         { relayName: "Relay V", games: ["FF3"] },
         { relayName: "Relay VII", games: ["FF5"] }
       ]
@@ -632,6 +634,7 @@ export const seriesInfoData: SeriesInfoData = {
       relayParticipation: [
         { relayName: "Relay II", games: ["FF12"] },
         { relayName: "Relay III", games: ["FF12"] },
+        { relayName: "Relay IV - Interlude", games: ["FF12"] },
         { relayName: "Relay V", games: ["FF12"] },
         { relayName: "Relay VI", games: ["FF12"] },
         { relayName: "Relay VIII", games: ["FF12"] }
@@ -685,6 +688,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "PoorScythe",
       runCount: 5,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF2"] },
         { relayName: "Relay V", games: ["FF2"] },
         { relayName: "Relay VI", games: ["FF3"] },
         { relayName: "Relay VII", games: ["FF3"] },
@@ -718,6 +722,7 @@ export const seriesInfoData: SeriesInfoData = {
       relayParticipation: [
         { relayName: "Relay II", games: ["FF10-2"] },
         { relayName: "Relay III", games: ["FF10-2"] },
+        { relayName: "Relay IV - Interlude", games: ["FF10-2"] },
         { relayName: "Relay VIII", games: ["FF10-2"] }
       ]
     },
@@ -755,6 +760,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "Desa35",
       runCount: 4,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["Crisis Core"] },
         { relayName: "Relay VII", games: ["FF12"] },
         { relayName: "Relay VIII", games: ["FF12"] },
         { relayName: "Relay IX", games: ["FF12"] }
@@ -786,6 +792,7 @@ export const seriesInfoData: SeriesInfoData = {
       relayParticipation: [
         { relayName: "Relay II", games: ["FF13-2"] },
         { relayName: "Relay III", games: ["FF13-2"] },
+        { relayName: "Relay IV - Interlude", games: ["FF13-2"] },
         { relayName: "Relay V", games: ["FF13-2"] }
       ]
     },
@@ -795,7 +802,8 @@ export const seriesInfoData: SeriesInfoData = {
       relayParticipation: [
         { relayName: "Relay II", games: ["FF1"] },
         { relayName: "Relay III", games: ["FF1"] },
-        { relayName: "Relay IV", games: ["FF1"] }
+        { relayName: "Relay IV", games: ["FF1"] },
+        { relayName: "Relay IV - Interlude", games: ["Dissidia"] }
       ]
     },
     {
@@ -812,6 +820,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "VerySydney",
       runCount: 4,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FFCC"] },
         { relayName: "Relay V", games: ["FFCC"] },
         { relayName: "Relay VI", games: ["FFCC"] },
         { relayName: "Relay VII", games: ["FFCC"] }
@@ -840,6 +849,7 @@ export const seriesInfoData: SeriesInfoData = {
       runCount: 3,
       relayParticipation: [
         { relayName: "Relay III", games: ["FF10-2"] },
+        { relayName: "Relay IV - Interlude", games: ["World of FF"] },
         { relayName: "Relay VI", games: ["FF10"] }
       ]
     },
@@ -848,7 +858,8 @@ export const seriesInfoData: SeriesInfoData = {
       runCount: 3,
       relayParticipation: [
         { relayName: "Relay II", games: ["FF2"] },
-        { relayName: "Relay IV", games: ["FF4"] }
+        { relayName: "Relay IV", games: ["FF4"] },
+        { relayName: "Relay IV - Interlude", games: ["FF1"] }
       ]
     },
     {
@@ -892,6 +903,7 @@ export const seriesInfoData: SeriesInfoData = {
       runCount: 3,
       relayParticipation: [
         { relayName: "Relay III", games: ["Type-0"] },
+        { relayName: "Relay IV - Interlude", games: ["World of FF"] },
         { relayName: "Relay VII", games: ["SoP"] }
       ]
     },
@@ -927,6 +939,7 @@ export const seriesInfoData: SeriesInfoData = {
       runCount: 3,
       relayParticipation: [
         { relayName: "Relay III", games: ["Type-0"] },
+        { relayName: "Relay IV - Interlude", games: ["Type-0"] },
         { relayName: "Relay VII", games: ["FF10"] }
       ]
     },
@@ -988,6 +1001,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "TranceQuina",
       runCount: 3,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF10-2"] },
         { relayName: "Relay V", games: ["FF9"] },
         { relayName: "Relay VIII", games: ["FFMQ"] }
       ]
@@ -1080,7 +1094,8 @@ export const seriesInfoData: SeriesInfoData = {
       name: "CloudyFinal",
       runCount: 2,
       relayParticipation: [
-        { relayName: "Relay III", games: ["FF7"] }
+        { relayName: "Relay III", games: ["FF7"] },
+        { relayName: "Relay IV - Interlude", games: ["FF9"] }
       ]
     },
     {
@@ -1223,7 +1238,8 @@ export const seriesInfoData: SeriesInfoData = {
       name: "IndiSR",
       runCount: 2,
       relayParticipation: [
-        { relayName: "Relay III", games: ["FF1"] }
+        { relayName: "Relay III", games: ["FF1"] },
+        { relayName: "Relay IV - Interlude", games: ["FF1"] }
       ]
     },
     {
@@ -1286,6 +1302,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "LittleTonbi",
       runCount: 2,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["Crystal Chronicles"] },
         { relayName: "Relay VI", games: ["FFCC"] }
       ]
     },
@@ -1349,6 +1366,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "NT1_Evolution",
       runCount: 2,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["Dirge of Cerberus"] },
         { relayName: "Relay VII", games: ["FF7:DoC"] }
       ]
     },
@@ -1380,13 +1398,15 @@ export const seriesInfoData: SeriesInfoData = {
       name: "Qazplm",
       runCount: 2,
       relayParticipation: [
-        { relayName: "Relay IV", games: ["FF3"] }
+        { relayName: "Relay IV", games: ["FF3"] },
+        { relayName: "Relay IV - Interlude", games: ["FF2"] }
       ]
     },
     {
       name: "Ricyosma",
       runCount: 2,
       relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF13-2"] },
         { relayName: "Relay V", games: ["FF13-2"] }
       ]
     },
@@ -1555,7 +1575,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "ArisCarroll",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Lightning Returns"] }
       ]
     },
     {
@@ -1800,7 +1820,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "GarfieldTheLightning",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Chocobo Tales"] }
       ]
     },
     {
@@ -1814,7 +1834,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "GocuComeBack",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Dirge of Cerberus"] }
       ]
     },
     {
@@ -1849,7 +1869,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "Kaeldori",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Chocobo Tales"] }
       ]
     },
     {
@@ -1947,7 +1967,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "MrMizzow",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Dissidia"] }
       ]
     },
     {
@@ -2080,7 +2100,7 @@ export const seriesInfoData: SeriesInfoData = {
       name: "Rinimt",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Crisis Core"] }
       ]
     },
     {
@@ -2115,14 +2135,14 @@ export const seriesInfoData: SeriesInfoData = {
       name: "Sent",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Type-0"] }
       ]
     },
     {
       name: "SephorianBlue",
       runCount: 1,
       relayParticipation: [
-
+        { relayName: "Relay IV - Interlude", games: ["Lightning Returns"] }
       ]
     },
     {
@@ -2368,6 +2388,41 @@ export const seriesInfoData: SeriesInfoData = {
       runCount: 1,
       relayParticipation: [
         { relayName: "Relay III", games: ["FF3"] }
+      ]
+    },
+    {
+      name: "Poorscythe",
+      runCount: 1,
+      relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF2"] }
+      ]
+    },
+    {
+      name: "Qazplm9000",
+      runCount: 1,
+      relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF2"] }
+      ]
+    },
+    {
+      name: "Cloudyfinal",
+      runCount: 1,
+      relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF9"] }
+      ]
+    },
+    {
+      name: "ricyosma",
+      runCount: 1,
+      relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["FF13-2"] }
+      ]
+    },
+    {
+      name: "Desa3579",
+      runCount: 1,
+      relayParticipation: [
+        { relayName: "Relay IV - Interlude", games: ["Crisis Core"] }
       ]
     }
   ]
