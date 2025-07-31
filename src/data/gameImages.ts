@@ -76,7 +76,10 @@ export const gameImages: Record<string, string> = {
 export function getGameImage(gameName: string): string {
   const imagePath = gameImages[gameName];
   if (imagePath) {
-    return `${BASE_URL}${imagePath.startsWith('/') ? imagePath.slice(1) : imagePath}`;
+    // Ensure BASE_URL ends with / and imagePath doesn't start with /
+    const baseUrl = BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/';
+    const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+    return `${baseUrl}${cleanPath}`;
   }
   
   // Remove platform/category suffixes to find base game name
@@ -111,16 +114,22 @@ export function getGameImage(gameName: string): string {
   
   const cleanedImagePath = gameImages[cleanedGameName];
   if (cleanedImagePath) {
-    return `${BASE_URL}${cleanedImagePath.startsWith('/') ? cleanedImagePath.slice(1) : cleanedImagePath}`;
+    const baseUrl = BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/';
+    const cleanPath = cleanedImagePath.startsWith('/') ? cleanedImagePath.slice(1) : cleanedImagePath;
+    return `${baseUrl}${cleanPath}`;
   }
   
   const lowerGameName = cleanedGameName.toLowerCase();
   for (const [key, value] of Object.entries(gameImages)) {
     if (lowerGameName.includes(key.toLowerCase()) || key.toLowerCase().includes(lowerGameName)) {
-      return `${BASE_URL}${value.startsWith('/') ? value.slice(1) : value}`;
+      const baseUrl = BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/';
+      const cleanPath = value.startsWith('/') ? value.slice(1) : value;
+      return `${baseUrl}${cleanPath}`;
     }
   }
   
   const defaultPath = gameImages['default'];
-  return `${BASE_URL}${defaultPath.startsWith('/') ? defaultPath.slice(1) : defaultPath}`;
+  const baseUrl = BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/';
+  const cleanPath = defaultPath.startsWith('/') ? defaultPath.slice(1) : defaultPath;
+  return `${baseUrl}${cleanPath}`;
 }
