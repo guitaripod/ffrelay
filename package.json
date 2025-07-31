@@ -1,0 +1,31 @@
+{
+  "name": "ffrelay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "update-runners": "tsx scripts/update-runners-comprehensive.ts",
+    "update-runners-api": "tsx scripts/update-runners-comprehensive.ts --fetch-api"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@astrojs/react": "^3.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "astro": "^5.12.6",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.3"
+  }
+}
