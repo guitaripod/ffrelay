@@ -186,6 +186,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay II", platform: "GBA" },
         { relayName: "Relay III", platform: "PSP" },
         { relayName: "Relay IV", platform: "GBA" },
+        { relayName: "Relay IV - Interlude", platform: "PSP" },
         { relayName: "Relay V", platform: "GBA" },
         { relayName: "Relay VI", platform: "PSP" },
         { relayName: "Relay VII", platform: "Pixel Remaster" },
@@ -202,6 +203,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay II", platform: "PSP" },
         { relayName: "Relay III", platform: "GBA" },
         { relayName: "Relay IV", platform: "GBA" },
+        { relayName: "Relay IV - Interlude", platform: "PSP" },
         { relayName: "Relay V", platform: "PSP" },
         { relayName: "Relay VI", platform: "PSP" },
         { relayName: "Relay VII", platform: "Pixel Remaster" },
@@ -312,6 +314,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay II", platform: "PS1" },
         { relayName: "Relay III", platform: "PS1" },
         { relayName: "Relay IV", platform: "PS1" },
+        { relayName: "Relay IV - Interlude", platform: "PS1" },
         { relayName: "Relay V", platform: "PS1" },
         { relayName: "Relay VI", platform: "PS1" },
         { relayName: "Relay VII", platform: "PS1" },
@@ -342,6 +345,7 @@ export const seriesInfoData: SeriesInfoData = {
       relays: [
         { relayName: "Relay II", platform: "PS2" },
         { relayName: "Relay III", platform: "PS3" },
+        { relayName: "Relay IV - Interlude", platform: "PS2" },
         { relayName: "Relay VIII", platform: "PC" },
         { relayName: "Relay X", platform: "PC" }
       ]
@@ -354,6 +358,7 @@ export const seriesInfoData: SeriesInfoData = {
         { relayName: "Relay II", platform: "PS2" },
         { relayName: "Relay III", platform: "PS2" },
         { relayName: "Relay IV", platform: "PS2" },
+        { relayName: "Relay IV - Interlude", platform: "PS2" },
         { relayName: "Relay V", platform: "PS2" },
         { relayName: "Relay VI", platform: "TZA" },
         { relayName: "Relay VII", platform: "TZA" },
@@ -384,6 +389,7 @@ export const seriesInfoData: SeriesInfoData = {
       relays: [
         { relayName: "Relay II", platform: "PC" },
         { relayName: "Relay III", platform: "PS3/PC" },
+        { relayName: "Relay IV - Interlude", platform: "PC" },
         { relayName: "Relay V", platform: "PS3/PC" },
         { relayName: "Relay VI", platform: "PC" },
         { relayName: "Relay VIII", platform: "PC" }
@@ -395,6 +401,7 @@ export const seriesInfoData: SeriesInfoData = {
       relays: [
         { relayName: "Relay II", platform: "PS3/PC" },
         { relayName: "Relay III", platform: "PC" },
+        { relayName: "Relay IV - Interlude", platform: "PC" },
         { relayName: "Relay V", platform: "PS3/PC" },
         { relayName: "Relay VI", platform: "PC" },
         { relayName: "Relay VIII", platform: "PC" }
@@ -450,6 +457,7 @@ export const seriesInfoData: SeriesInfoData = {
       game: "World of Final Fantasy",
       timesPlayed: 4,
       relays: [
+        { relayName: "Relay IV - Interlude", platform: "PC" },
         { relayName: "Relay VI", platform: "PC" },
         { relayName: "Relay VII", platform: "PC" },
         { relayName: "Relay X", platform: "PC" }
@@ -460,6 +468,7 @@ export const seriesInfoData: SeriesInfoData = {
       timesPlayed: 4,
       relays: [
         { relayName: "Relay III", platform: "PC" },
+        { relayName: "Relay IV - Interlude", platform: "PC" },
         { relayName: "Relay IX", platform: "PC" },
         { relayName: "Relay X", platform: "PC" }
       ]
@@ -468,7 +477,7 @@ export const seriesInfoData: SeriesInfoData = {
       game: "Crisis Core: Final Fantasy VII",
       timesPlayed: 1,
       relays: [
-
+        { relayName: "Relay IV - Interlude", platform: "PSP" }
       ]
     },
     {
@@ -482,6 +491,7 @@ export const seriesInfoData: SeriesInfoData = {
       game: "Dirge of Cerberus: Final Fantasy VII",
       timesPlayed: 2,
       relays: [
+        { relayName: "Relay IV - Interlude", platform: "PS2" },
         { relayName: "Relay VII", platform: "PS2" }
       ]
     },
@@ -505,6 +515,7 @@ export const seriesInfoData: SeriesInfoData = {
       game: "Final Fantasy Crystal Chronicles",
       timesPlayed: 4,
       relays: [
+        { relayName: "Relay IV - Interlude", platform: "GCN" },
         { relayName: "Relay V", platform: "GCN" },
         { relayName: "Relay VI", platform: "Switch" },
         { relayName: "Relay VII", platform: "GCN" }
@@ -514,14 +525,14 @@ export const seriesInfoData: SeriesInfoData = {
       game: "Final Fantasy Dissidia",
       timesPlayed: 1,
       relays: [
-
+        { relayName: "Relay IV - Interlude", platform: "PSP" }
       ]
     },
     {
       game: "Final Fantasy Fables: Chocobo Tales",
       timesPlayed: 1,
       relays: [
-
+        { relayName: "Relay IV - Interlude", platform: "DS" }
       ]
     },
     {

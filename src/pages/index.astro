@@ -159,7 +159,7 @@ import { runnerData } from '../data/runnerData';
                     <div class="relay-badges">
                       {game.relays.map((relay) => (
                         <span class="relay-badge-compact" title={`${relay.relayName} - ${relay.platform}`}>
-                          {relay.relayName.replace('Relay ', '')}
+                          {relay.relayName.replace('Relay ', '').replace('IV - Interlude', 'IV-i')}
                         </span>
                       ))}
                     </div>
