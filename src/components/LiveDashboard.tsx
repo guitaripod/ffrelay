@@ -530,14 +530,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                               </tr>
                             </thead>
                             <tbody>
-                              {gameSplit && (
-                                <tr className={styles.gameTotalRow}>
-                                  <td>{item.game} Total</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime, false)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime, false)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime, false)}</td>
-                                </tr>
-                              )}
                               {subSplits.map((split, splitIndex) => (
                                 <tr key={splitIndex} className={styles.splitDetailRow}>
                                   <td className={styles.splitName}>{split.name}</td>
@@ -546,6 +538,14 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                                   <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry)}</td>
                                 </tr>
                               ))}
+                              {gameSplit && (
+                                <tr className={styles.gameTotalRow}>
+                                  <td>{item.game} Total</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime)}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime)}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime)}</td>
+                                </tr>
+                              )}
                             </tbody>
                           </table>
                         </td>
