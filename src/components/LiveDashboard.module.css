@@ -241,6 +241,7 @@
 .unifiedTable table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .unifiedTable thead th {
@@ -260,6 +261,21 @@
 
 .unifiedTable thead th:first-child {
   text-align: left;
+  width: 35%;
+}
+
+.unifiedTable thead th:nth-child(2) {
+  width: 10%;
+}
+
+.unifiedTable thead th:nth-child(3),
+.unifiedTable thead th:nth-child(4),
+.unifiedTable thead th:nth-child(5) {
+  width: 10%;
+}
+
+.unifiedTable thead th:last-child {
+  width: 25%;
 }
 
 .gameInfoRow {
