@@ -336,6 +336,7 @@
 
 .splitsSubTable th:first-child {
   width: 40%;
+  text-align: left;
 }
 
 .splitsSubTable th:not(:first-child) {
@@ -345,6 +346,10 @@
 .splitsSubTable td {
   padding: 0.3rem;
   text-align: center;
+}
+
+.splitsSubTable td:first-child {
+  text-align: left;
 }
 
 .gameTotalRow {
