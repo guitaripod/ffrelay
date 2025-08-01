@@ -4,7 +4,7 @@ import eventData from '../data/excel-data.json';
 const schedule = eventData.Schedule;
 const scheduleData = [];
 
-for (let i = 6; i < schedule.length - 1; i++) {
+for (let i = 6; i < schedule.length; i++) {
   const row = schedule[i];
   if (row[0] && row[0] !== '') {
     const startEDT = row[2];
@@ -36,8 +36,8 @@ for (let i = 6; i < schedule.length - 1; i++) {
     };
 
     scheduleData.push({
-      game: row[0],
-      duration: formatDuration(row[1]),
+      game: row[0] || (row[1] === 'END' ? 'Total' : ''),
+      duration: row[1] === 'END' ? '' : formatDuration(row[1]),
       startEDT: formatTime(startEDT),
       startCEST: formatTime(startCEST),
       startJST: formatTime(startJST)
@@ -59,7 +59,7 @@ for (let i = 6; i < schedule.length - 1; i++) {
 
     <div class="schedule-grid">
       {scheduleData.map((item, index) => (
-        <div class="schedule-item">
+        <div class={`schedule-item ${item.game === 'Total' ? 'total-row' : ''}`}>
           <div class="schedule-number">{index + 1}</div>
           <h4 class="schedule-game">{item.game}</h4>
           <div class="schedule-duration">{item.duration}</div>
@@ -223,6 +223,23 @@ for (let i = 6; i < schedule.length - 1; i++) {
   .time {
     font-family: var(--font-display);
     font-weight: 600;
+  }
+
+  .schedule-item.total-row {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .schedule-item.total-row .schedule-game {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .schedule-item.total-row .schedule-number {
+    background: var(--color-accent);
+    color: var(--color-primary);
+    font-weight: 700;
   }
 
   @media (max-width: 768px) {

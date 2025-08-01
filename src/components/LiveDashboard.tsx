@@ -588,6 +588,26 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                                 </tr>
                               ))}
                               {gameSplit && (() => {
+                                // Calculate accumulated totals only if this game is completed
+                                const currentGameData = item.splits?.find(s => s.type === 'game');
+                                const isGameCompleted = currentGameData && (
+                                  (currentGameData.mogTime && !isExcelError(currentGameData.mogTime)) ||
+                                  (currentGameData.chocoTime && !isExcelError(currentGameData.chocoTime)) ||
+                                  (currentGameData.tonberryTime && !isExcelError(currentGameData.tonberryTime))
+                                );
+                                
+                                if (!isGameCompleted) {
+                                  // Show dashes for games that haven't been completed yet
+                                  return (
+                                    <tr className={styles.gameTotalRow}>
+                                      <td>{item.game} Total</td>
+                                      <td className={`${styles.time} ${styles.mog}`}>-</td>
+                                      <td className={`${styles.time} ${styles.choco}`}>-</td>
+                                      <td className={`${styles.time} ${styles.tonberry}`}>-</td>
+                                    </tr>
+                                  );
+                                }
+                                
                                 // Calculate accumulated totals up to this game
                                 let accMog = 0, accChoco = 0, accTonberry = 0;
                                 
