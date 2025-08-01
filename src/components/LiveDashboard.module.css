@@ -403,6 +403,17 @@
   color: #d4af37;
 }
 
+.commentatorsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.commentatorName {
+  display: block;
+  line-height: 1.2;
+}
+
 .runnerLink {
   color: inherit;
   text-decoration: none;
@@ -580,16 +591,6 @@
     box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.3);
   }
   
-  .commentatorsList {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-  
-  .commentatorName {
-    display: block;
-    line-height: 1.2;
-  }
   
   .commentatorsLabel {
     display: none;
