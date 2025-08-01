@@ -236,14 +236,40 @@ export default function LiveDashboardStatic() {
                                   <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry)}</td>
                                 </tr>
                               ))}
-                              {gameSplit && (
-                                <tr className={styles.gameTotalRow}>
-                                  <td>{item.game} Total</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime)}</td>
-                                </tr>
-                              )}
+                              {gameSplit && (() => {
+                                // Calculate accumulated totals up to this game
+                                let accMog = 0, accChoco = 0, accTonberry = 0;
+                                
+                                for (let i = 0; i <= index; i++) {
+                                  const gameData = unifiedSchedule[i].splits?.find(s => s.type === 'game');
+                                  if (gameData) {
+                                    if (gameData.mogTime && !isExcelError(gameData.mogTime)) {
+                                      accMog += parseTime(gameData.mogTime);
+                                    }
+                                    if (gameData.chocoTime && !isExcelError(gameData.chocoTime)) {
+                                      accChoco += parseTime(gameData.chocoTime);
+                                    }
+                                    if (gameData.tonberryTime && !isExcelError(gameData.tonberryTime)) {
+                                      accTonberry += parseTime(gameData.tonberryTime);
+                                    }
+                                  }
+                                }
+                                
+                                return (
+                                  <tr className={styles.gameTotalRow}>
+                                    <td>{item.game} Total</td>
+                                    <td className={`${styles.time} ${styles.mog}`}>
+                                      {accMog > 0 ? formatTime(accMog) : '-'}
+                                    </td>
+                                    <td className={`${styles.time} ${styles.choco}`}>
+                                      {accChoco > 0 ? formatTime(accChoco) : '-'}
+                                    </td>
+                                    <td className={`${styles.time} ${styles.tonberry}`}>
+                                      {accTonberry > 0 ? formatTime(accTonberry) : '-'}
+                                    </td>
+                                  </tr>
+                                );
+                              })()}
                             </tbody>
                           </table>
                         </td>
