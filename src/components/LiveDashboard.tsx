@@ -377,20 +377,22 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
   return (
     <div className={styles.liveDashboard}>
 
-      <div className={styles.standingsDisplay}>
-        <div className={`${styles.teamTotal} ${styles.mog}`}>
-          <span className={styles.teamLabel}>Team Mog</span>
-          <span className={styles.teamTime}>{formatTime(teamTotals.mog)}</span>
+      {(teamTotals.mog > 0 || teamTotals.choco > 0 || teamTotals.tonberry > 0) && (
+        <div className={styles.standingsDisplay}>
+          <div className={`${styles.teamTotal} ${styles.mog}`}>
+            <span className={styles.teamLabel}>Team Mog</span>
+            <span className={styles.teamTime}>{formatTime(teamTotals.mog)}</span>
+          </div>
+          <div className={`${styles.teamTotal} ${styles.choco}`}>
+            <span className={styles.teamLabel}>Team Choco</span>
+            <span className={styles.teamTime}>{formatTime(teamTotals.choco)}</span>
+          </div>
+          <div className={`${styles.teamTotal} ${styles.tonberry}`}>
+            <span className={styles.teamLabel}>Team Tonberry</span>
+            <span className={styles.teamTime}>{formatTime(teamTotals.tonberry)}</span>
+          </div>
         </div>
-        <div className={`${styles.teamTotal} ${styles.choco}`}>
-          <span className={styles.teamLabel}>Team Choco</span>
-          <span className={styles.teamTime}>{formatTime(teamTotals.choco)}</span>
-        </div>
-        <div className={`${styles.teamTotal} ${styles.tonberry}`}>
-          <span className={styles.teamLabel}>Team Tonberry</span>
-          <span className={styles.teamTime}>{formatTime(teamTotals.tonberry)}</span>
-        </div>
-      </div>
+      )}
 
       <div className={`${styles.compactTable} ${styles.unifiedTable}`}>
         <h4>SCHEDULE</h4>
