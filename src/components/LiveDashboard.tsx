@@ -101,6 +101,11 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         return normalized;
       };
       
+      // Preserve expanded state from current schedule
+      const expandedGames = new Set(
+        unifiedSchedule.filter(item => item.isExpanded).map(item => item.game)
+      );
+      
       const unified: UnifiedScheduleItem[] = parsedSchedule.map((scheduleItem, index) => {
         const run = parsedRuns.find(r => r.game === scheduleItem.game);
         
@@ -177,14 +182,10 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
           teamTonberry: run?.teamTonberry || '',
           commentators: run?.commentators || '',
           splits: gameSplits,
-          isExpanded: false,
+          isExpanded: expandedGames.has(scheduleItem.game),
           gameIndex: index
         };
       });
-      
-      setUnifiedSchedule(unified);
-      setSplits(parsedSplits);
-      setPastEventData(data.pastEvents || []);
       
       const completedGames = parsedSplits
         .filter(s => s.type === 'game' && s.mogSplit && s.chocoSplit && s.tonberrySplit)
@@ -202,6 +203,15 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         return !isCompleted;
       });
       
+      // Update unified schedule to auto-expand current game
+      const finalUnified = unified.map((item, index) => ({
+        ...item,
+        isExpanded: expandedGames.has(item.game) || index === currentIndex
+      }));
+      
+      setUnifiedSchedule(finalUnified);
+      setSplits(parsedSplits);
+      setPastEventData(data.pastEvents || []);
       setCurrentGameIndex(currentIndex);
       
       const updateTime = new Date();
@@ -517,32 +527,23 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                                 <th className={styles.mog}>Mog</th>
                                 <th className={styles.choco}>Choco</th>
                                 <th className={styles.tonberry}>Tonberry</th>
-                                <th className={styles.mog}>+/-</th>
-                                <th className={styles.choco}>+/-</th>
-                                <th className={styles.tonberry}>+/-</th>
                               </tr>
                             </thead>
                             <tbody>
                               {gameSplit && (
                                 <tr className={styles.gameTotalRow}>
                                   <td>{item.game} Total</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime)}</td>
-                                  <td className={`${styles.split} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogSplit)}</td>
-                                  <td className={`${styles.split} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoSplit)}</td>
-                                  <td className={`${styles.split} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberrySplit)}</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime, false)}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime, false)}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime, false)}</td>
                                 </tr>
                               )}
                               {subSplits.map((split, splitIndex) => (
                                 <tr key={splitIndex} className={styles.splitDetailRow}>
                                   <td className={styles.splitName}>{split.name}</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(split.teamMog, false)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(split.teamChoco, false)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry, false)}</td>
-                                  <td className={`${styles.segment} ${styles.mog}`}>{cleanExcelValue(split.mogSegment)}</td>
-                                  <td className={`${styles.segment} ${styles.choco}`}>{cleanExcelValue(split.chocoSegment)}</td>
-                                  <td className={`${styles.segment} ${styles.tonberry}`}>{cleanExcelValue(split.tonberrySegment)}</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(split.teamMog)}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(split.teamChoco)}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry)}</td>
                                 </tr>
                               ))}
                             </tbody>

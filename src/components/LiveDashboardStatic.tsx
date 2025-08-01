@@ -225,32 +225,23 @@ export default function LiveDashboardStatic() {
                                 <th className={styles.mog}>Mog</th>
                                 <th className={styles.choco}>Choco</th>
                                 <th className={styles.tonberry}>Tonberry</th>
-                                <th className={styles.mog}>+/-</th>
-                                <th className={styles.choco}>+/-</th>
-                                <th className={styles.tonberry}>+/-</th>
                               </tr>
                             </thead>
                             <tbody>
                               {gameSplit && (
                                 <tr className={styles.gameTotalRow}>
                                   <td>{item.game} Total</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime)}</td>
-                                  <td className={`${styles.split} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogSplit)}</td>
-                                  <td className={`${styles.split} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoSplit)}</td>
-                                  <td className={`${styles.split} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberrySplit)}</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(gameSplit.mogTime, false)}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(gameSplit.chocoTime, false)}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(gameSplit.tonberryTime, false)}</td>
                                 </tr>
                               )}
                               {subSplits.map((split, splitIndex) => (
                                 <tr key={splitIndex} className={styles.splitDetailRow}>
                                   <td className={styles.splitName}>{split.name}</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(split.teamMog, false)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(split.teamChoco, false)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry, false)}</td>
-                                  <td className={`${styles.segment} ${styles.mog}`}>{cleanExcelValue(split.mogSegment)}</td>
-                                  <td className={`${styles.segment} ${styles.choco}`}>{cleanExcelValue(split.chocoSegment)}</td>
-                                  <td className={`${styles.segment} ${styles.tonberry}`}>{cleanExcelValue(split.tonberrySegment)}</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(split.teamMog)}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(split.teamChoco)}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry)}</td>
                                 </tr>
                               ))}
                             </tbody>
