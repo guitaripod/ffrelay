@@ -3,6 +3,7 @@ import { fetchAllEventData, parseRunData, parseScheduleData, parseSplitsData } f
 import PastEventDisplay from './PastEventDisplay';
 import { runnerData } from '../data/runnerData';
 import { getGameImage } from '../data/gameImages';
+import GameTimeline from './GameTimeline';
 import styles from './LiveDashboard.module.css';
 
 interface Run {
@@ -384,8 +385,37 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     );
   }
 
+  // Prepare timeline data
+  const timelineGames = unifiedSchedule.map((item, index) => {
+    const gameSplit = item.splits?.find(s => s.type === 'game');
+    const hasTime = gameSplit && (
+      (gameSplit.mogTime && gameSplit.mogTime !== '') ||
+      (gameSplit.chocoTime && gameSplit.chocoTime !== '') ||
+      (gameSplit.tonberryTime && gameSplit.tonberryTime !== '')
+    );
+    
+    return {
+      name: item.game,
+      completed: hasTime || false,
+      current: index === currentGameIndex
+    };
+  });
+
+  // Calculate total progress
+  const completedGames = timelineGames.filter(g => g.completed).length;
+  const totalProgress = unifiedSchedule.length > 0 
+    ? (completedGames / unifiedSchedule.length) * 100 
+    : 0;
+
   return (
     <div className={styles.liveDashboard}>
+
+      {unifiedSchedule.length > 0 && (
+        <GameTimeline 
+          games={timelineGames}
+          totalProgress={totalProgress}
+        />
+      )}
 
       {(teamTotals.mog > 0 || teamTotals.choco > 0 || teamTotals.tonberry > 0) && (
         <div className={styles.standingsDisplay}>

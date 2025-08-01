@@ -1,0 +1,242 @@
+.timeline {
+  margin-bottom: 2rem;
+  padding: 1.5rem 0 1rem 0;
+}
+
+.gamesRow {
+  position: relative;
+  height: 100px;
+  margin-bottom: 1rem;
+  margin-left: 20px;
+  margin-right: 20px;
+  overflow-x: visible;
+  overflow-y: visible;
+}
+
+/* Webkit scrollbar styling */
+.gamesRow::-webkit-scrollbar {
+  height: 12px;
+}
+
+.gamesRow::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.gamesRow::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.gamesRow::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+.gameItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+}
+
+.gameImage {
+  width: 60px;
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.gameImage.current {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.6);
+  border: 2px solid #FFD700;
+}
+
+.gameImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gameName {
+  font-size: 0.5rem;
+  text-align: center;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #666;
+}
+
+.progressLine {
+  position: relative;
+  height: 60px;
+  margin: 0 20px;
+  margin-top: 20px;
+}
+
+.lineTrack {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.progressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #4CAF50;
+  transition: width 0.5s ease-out;
+  border-radius: 2px;
+}
+
+.checkpoint {
+  position: absolute;
+  top: -8px;
+  width: 20px;
+  height: 20px;
+  transform: translateX(-50%);
+}
+
+.checkmark {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  animation: checkmarkPop 0.3s ease-out;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.warrior {
+  position: absolute;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  transform: translateX(-50%);
+  transition: left 0.5s ease-out;
+  z-index: 10;
+}
+
+.moogle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: float 2s ease-in-out infinite;
+}
+
+/* Moogle CSS Art */
+.moogleHead {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mooglePom {
+  position: absolute;
+  top: 0;
+  left: 16px;
+  width: 8px;
+  height: 8px;
+  background: #ff6b6b;
+  border-radius: 50%;
+}
+
+.mooglePom::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 3px;
+  width: 2px;
+  height: 8px;
+  background: #333;
+}
+
+.moogleBody {
+  position: absolute;
+  top: 25px;
+  left: 12px;
+  width: 16px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50% 50% 40% 40%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.moogleWings {
+  position: absolute;
+  top: 20px;
+  left: 5px;
+  width: 8px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50% 0 50% 0;
+  transform: rotate(-20deg);
+}
+
+.moogleWings::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  width: 8px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0 50% 0 50%;
+  transform: rotate(40deg);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gameImage {
+    width: 50px;
+    height: 75px;
+  }
+  
+  .gameName {
+    font-size: 0.5rem;
+    max-width: 60px;
+  }
+}
