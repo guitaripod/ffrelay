@@ -414,6 +414,35 @@
   text-decoration: underline;
 }
 
+.completedCheckmark {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: #4CAF50;
+  font-size: 1rem;
+  font-weight: bold;
+  vertical-align: middle;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+  animation: checkmarkPulse 2s ease-in-out infinite;
+}
+
+@keyframes checkmarkPulse {
+  0% {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+  }
+}
+
 .skeleton {
   background: linear-gradient(
     90deg,

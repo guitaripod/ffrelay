@@ -455,6 +455,16 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
               const gameSplit = item.splits?.find(s => s.type === 'game');
               const subSplits = item.splits?.filter(s => s.type === 'split') || [];
               
+              // Check if all splits have been recorded
+              const allSplitsRecorded = gameSplit && 
+                gameSplit.mogTime && !isExcelError(gameSplit.mogTime) && gameSplit.mogTime !== '' &&
+                gameSplit.chocoTime && !isExcelError(gameSplit.chocoTime) && gameSplit.chocoTime !== '' &&
+                gameSplit.tonberryTime && !isExcelError(gameSplit.tonberryTime) && gameSplit.tonberryTime !== '' &&
+                subSplits.every(split => 
+                  split.teamMog && !isExcelError(split.teamMog) && split.teamMog !== '' &&
+                  split.teamChoco && !isExcelError(split.teamChoco) && split.teamChoco !== '' &&
+                  split.teamTonberry && !isExcelError(split.teamTonberry) && split.teamTonberry !== ''
+                );
               
               return (
                 <React.Fragment key={index}>
@@ -488,6 +498,9 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                           {item.game}
                           {subSplits.length > 0 && (
                             <span className={styles.splitsLabel}> ({subSplits.length} splits)</span>
+                          )}
+                          {allSplitsRecorded && (
+                            <span className={styles.completedCheckmark}>✓</span>
                           )}
                         </span>
                       </div>
