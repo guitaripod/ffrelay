@@ -520,8 +520,83 @@
     font-size: 0.65rem;
   }
   
+  .unifiedTable thead th:first-child {
+    width: 15%;
+  }
+  
+  .unifiedTable thead th:last-child {
+    width: 15%;
+  }
+  
+  .unifiedTable thead th:nth-child(2) {
+    width: 15%;
+  }
+  
+  .unifiedTable thead th:nth-child(3),
+  .unifiedTable thead th:nth-child(4),
+  .unifiedTable thead th:nth-child(5) {
+    width: 18.33%;
+  }
+  
   .pastEvents {
     margin-top: 1rem;
     padding: 0.5rem;
+  }
+  
+  .gameTitle {
+    display: none;
+  }
+  
+  .splitsLabel {
+    display: none;
+  }
+  
+  .gameCell {
+    gap: 0.25rem;
+    justify-content: flex-start;
+  }
+  
+  .expandButton {
+    margin-right: 0.25rem;
+    padding: 0;
+    font-size: 0.7rem;
+  }
+  
+  .gameTextWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: auto;
+  }
+  
+  .completedCheckmark {
+    margin-left: 0;
+    width: 1rem;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.7rem;
+    animation: none;
+    box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.3);
+  }
+  
+  .commentatorsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  
+  .commentatorName {
+    display: block;
+    line-height: 1.2;
+  }
+  
+  .commentatorsLabel {
+    display: none;
+  }
+  
+  .commentary {
+    font-size: 0.6rem;
+    padding: 0.2rem;
   }
 }

@@ -482,7 +482,7 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                           width={50}
                           height={50}
                         />
-                        <span>
+                        <span className={styles.gameTextWrapper}>
                           {subSplits.length > 0 && (
                             <button 
                               className={styles.expandButton}
@@ -495,7 +495,7 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                               {item.isExpanded ? '▾' : '▸'}
                             </button>
                           )}
-                          {item.game}
+                          <span className={styles.gameTitle}>{item.game}</span>
                           {subSplits.length > 0 && (
                             <span className={styles.splitsLabel}> ({subSplits.length} splits)</span>
                           )}
@@ -512,7 +512,13 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                     <td className={styles.commentary} rowSpan={2}>
                       <span className={styles.commentatorsLabel}>Commentators:</span>
                       <br />
-                      {item.commentators}
+                      <span className={styles.commentatorsList}>
+                        {item.commentators.split(',').map((commentator, idx) => (
+                          <span key={idx} className={styles.commentatorName}>
+                            {commentator.trim()}
+                          </span>
+                        ))}
+                      </span>
                     </td>
                   </tr>
                   <tr className={`${styles.runnersRow} ${index === currentGameIndex ? styles.current : ''}`}>
