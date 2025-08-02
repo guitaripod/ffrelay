@@ -71,6 +71,19 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [pastEventData, setPastEventData] = useState<any[]>([]);
+  const [splitMode, setSplitMode] = useState<'times' | 'splits' | 'segments'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('splitMode') as 'times' | 'splits' | 'segments') || 'times';
+    }
+    return 'times';
+  });
+  const [expandedGames, setExpandedGames] = useState<Set<string>>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('expandedGames');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    }
+    return new Set();
+  });
 
   const fetchData = useCallback(async () => {
     try {
@@ -102,10 +115,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         return normalized;
       };
       
-      // Preserve expanded state from current schedule
-      const expandedGames = new Set(
-        unifiedSchedule.filter(item => item.isExpanded).map(item => item.game)
-      );
       
       const unified: UnifiedScheduleItem[] = parsedSchedule.map((scheduleItem, index) => {
         const run = parsedRuns.find(r => r.game === scheduleItem.game);
@@ -204,7 +213,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         return !isCompleted;
       });
       
-      // Update unified schedule to auto-expand current game
       const finalUnified = unified.map((item, index) => ({
         ...item,
         isExpanded: expandedGames.has(item.game) || index === currentIndex
@@ -235,7 +243,7 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         onLastUpdate(null);
       }
     }
-  }, [onLastUpdate]);
+  }, [onLastUpdate, expandedGames]);
 
   useEffect(() => {
     fetchData();
@@ -266,9 +274,30 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
   };
 
   const toggleGameExpand = (index: number) => {
+    const game = unifiedSchedule[index].game;
+    const newExpandedGames = new Set(expandedGames);
+    
+    if (expandedGames.has(game)) {
+      newExpandedGames.delete(game);
+    } else {
+      newExpandedGames.add(game);
+    }
+    
+    setExpandedGames(newExpandedGames);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('expandedGames', JSON.stringify(Array.from(newExpandedGames)));
+    }
+    
     const newSchedule = [...unifiedSchedule];
     newSchedule[index].isExpanded = !newSchedule[index].isExpanded;
     setUnifiedSchedule(newSchedule);
+  };
+
+  const handleSplitModeChange = (mode: 'times' | 'splits' | 'segments') => {
+    setSplitMode(mode);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('splitMode', mode);
+    }
   };
   
   const formatTimeWithoutSeconds = (timeStr: string): string => {
@@ -309,6 +338,16 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getSplitValue = (split: Split, team: 'mog' | 'choco' | 'tonberry'): string => {
+    if (splitMode === 'times') {
+      return team === 'mog' ? split.teamMog : team === 'choco' ? split.teamChoco : split.teamTonberry;
+    } else if (splitMode === 'splits') {
+      return team === 'mog' ? split.mogTime : team === 'choco' ? split.chocoTime : split.tonberryTime;
+    } else {
+      return team === 'mog' ? split.mogSplit : team === 'choco' ? split.chocoSplit : split.tonberrySplit;
+    }
   };
 
   const teamTotals = calculateTeamTotals();
@@ -435,7 +474,29 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
       )}
 
       <div className={`${styles.compactTable} ${styles.unifiedTable}`}>
-        <h4>SCHEDULE</h4>
+        <div className={styles.scheduleHeader}>
+          <h4 className={styles.scheduleTitle}>SCHEDULE</h4>
+          <div className={styles.splitModeButtons}>
+            <button
+              onClick={() => handleSplitModeChange('times')}
+              className={`${styles.splitModeButton} ${splitMode === 'times' ? styles.active : ''}`}
+            >
+              Split Times
+            </button>
+            <button
+              onClick={() => handleSplitModeChange('splits')}
+              className={`${styles.splitModeButton} ${splitMode === 'splits' ? styles.active : ''}`}
+            >
+              Splits by Game
+            </button>
+            <button
+              onClick={() => handleSplitModeChange('segments')}
+              className={`${styles.splitModeButton} ${splitMode === 'segments' ? styles.active : ''}`}
+            >
+              Segment Times
+            </button>
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
@@ -455,16 +516,18 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
               const gameSplit = item.splits?.find(s => s.type === 'game');
               const subSplits = item.splits?.filter(s => s.type === 'split') || [];
               
-              // Check if all splits have been recorded
               const allSplitsRecorded = gameSplit && 
                 gameSplit.mogTime && !isExcelError(gameSplit.mogTime) && gameSplit.mogTime !== '' &&
                 gameSplit.chocoTime && !isExcelError(gameSplit.chocoTime) && gameSplit.chocoTime !== '' &&
                 gameSplit.tonberryTime && !isExcelError(gameSplit.tonberryTime) && gameSplit.tonberryTime !== '' &&
-                subSplits.every(split => 
-                  split.teamMog && !isExcelError(split.teamMog) && split.teamMog !== '' &&
-                  split.teamChoco && !isExcelError(split.teamChoco) && split.teamChoco !== '' &&
-                  split.teamTonberry && !isExcelError(split.teamTonberry) && split.teamTonberry !== ''
-                );
+                subSplits.every(split => {
+                  const mogValue = getSplitValue(split, 'mog');
+                  const chocoValue = getSplitValue(split, 'choco');
+                  const tonberryValue = getSplitValue(split, 'tonberry');
+                  return mogValue && !isExcelError(mogValue) && mogValue !== '' &&
+                         chocoValue && !isExcelError(chocoValue) && chocoValue !== '' &&
+                         tonberryValue && !isExcelError(tonberryValue) && tonberryValue !== '';
+                });
               
               return (
                 <React.Fragment key={index}>
@@ -582,64 +645,68 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
                               {subSplits.map((split, splitIndex) => (
                                 <tr key={splitIndex} className={styles.splitDetailRow}>
                                   <td className={styles.splitName}>{split.name}</td>
-                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(split.teamMog)}</td>
-                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(split.teamChoco)}</td>
-                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(split.teamTonberry)}</td>
+                                  <td className={`${styles.time} ${styles.mog}`}>{cleanExcelValue(getSplitValue(split, 'mog'))}</td>
+                                  <td className={`${styles.time} ${styles.choco}`}>{cleanExcelValue(getSplitValue(split, 'choco'))}</td>
+                                  <td className={`${styles.time} ${styles.tonberry}`}>{cleanExcelValue(getSplitValue(split, 'tonberry'))}</td>
                                 </tr>
                               ))}
                               {gameSplit && (() => {
-                                // Calculate accumulated totals only if this game is completed
                                 const currentGameData = item.splits?.find(s => s.type === 'game');
-                                const isGameCompleted = currentGameData && (
-                                  (currentGameData.mogTime && !isExcelError(currentGameData.mogTime)) ||
-                                  (currentGameData.chocoTime && !isExcelError(currentGameData.chocoTime)) ||
-                                  (currentGameData.tonberryTime && !isExcelError(currentGameData.tonberryTime))
-                                );
                                 
-                                if (!isGameCompleted) {
-                                  // Show dashes for games that haven't been completed yet
+                                if (splitMode === 'times') {
                                   return (
                                     <tr className={styles.gameTotalRow}>
                                       <td>{item.game} Total</td>
-                                      <td className={`${styles.time} ${styles.mog}`}>-</td>
-                                      <td className={`${styles.time} ${styles.choco}`}>-</td>
-                                      <td className={`${styles.time} ${styles.tonberry}`}>-</td>
+                                      <td className={`${styles.time} ${styles.mog}`}>
+                                        {gameSplit?.teamMog && !isExcelError(gameSplit.teamMog) ? gameSplit.teamMog : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.choco}`}>
+                                        {gameSplit?.teamChoco && !isExcelError(gameSplit.teamChoco) ? gameSplit.teamChoco : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.tonberry}`}>
+                                        {gameSplit?.teamTonberry && !isExcelError(gameSplit.teamTonberry) ? gameSplit.teamTonberry : '-'}
+                                      </td>
+                                    </tr>
+                                  );
+                                } else if (splitMode === 'splits') {
+                                  const mogValue = currentGameData?.mogTime;
+                                  const chocoValue = currentGameData?.chocoTime;
+                                  const tonberryValue = currentGameData?.tonberryTime;
+                                  
+                                  return (
+                                    <tr className={styles.gameTotalRow}>
+                                      <td>{item.game} Total</td>
+                                      <td className={`${styles.time} ${styles.mog}`}>
+                                        {mogValue && !isExcelError(mogValue) ? mogValue : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.choco}`}>
+                                        {chocoValue && !isExcelError(chocoValue) ? chocoValue : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.tonberry}`}>
+                                        {tonberryValue && !isExcelError(tonberryValue) ? tonberryValue : '-'}
+                                      </td>
+                                    </tr>
+                                  );
+                                } else {
+                                  const mogValue = currentGameData?.mogSplit;
+                                  const chocoValue = currentGameData?.chocoSplit;
+                                  const tonberryValue = currentGameData?.tonberrySplit;
+                                  
+                                  return (
+                                    <tr className={styles.gameTotalRow}>
+                                      <td>{item.game} Total</td>
+                                      <td className={`${styles.time} ${styles.mog}`}>
+                                        {mogValue && !isExcelError(mogValue) ? mogValue : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.choco}`}>
+                                        {chocoValue && !isExcelError(chocoValue) ? chocoValue : '-'}
+                                      </td>
+                                      <td className={`${styles.time} ${styles.tonberry}`}>
+                                        {tonberryValue && !isExcelError(tonberryValue) ? tonberryValue : '-'}
+                                      </td>
                                     </tr>
                                   );
                                 }
-                                
-                                // Calculate accumulated totals up to this game
-                                let accMog = 0, accChoco = 0, accTonberry = 0;
-                                
-                                for (let i = 0; i <= index; i++) {
-                                  const gameData = unifiedSchedule[i].splits?.find(s => s.type === 'game');
-                                  if (gameData) {
-                                    if (gameData.mogTime && !isExcelError(gameData.mogTime)) {
-                                      accMog += parseTime(gameData.mogTime);
-                                    }
-                                    if (gameData.chocoTime && !isExcelError(gameData.chocoTime)) {
-                                      accChoco += parseTime(gameData.chocoTime);
-                                    }
-                                    if (gameData.tonberryTime && !isExcelError(gameData.tonberryTime)) {
-                                      accTonberry += parseTime(gameData.tonberryTime);
-                                    }
-                                  }
-                                }
-                                
-                                return (
-                                  <tr className={styles.gameTotalRow}>
-                                    <td>{item.game} Total</td>
-                                    <td className={`${styles.time} ${styles.mog}`}>
-                                      {accMog > 0 ? formatTime(accMog) : '-'}
-                                    </td>
-                                    <td className={`${styles.time} ${styles.choco}`}>
-                                      {accChoco > 0 ? formatTime(accChoco) : '-'}
-                                    </td>
-                                    <td className={`${styles.time} ${styles.tonberry}`}>
-                                      {accTonberry > 0 ? formatTime(accTonberry) : '-'}
-                                    </td>
-                                  </tr>
-                                );
                               })()}
                             </tbody>
                           </table>

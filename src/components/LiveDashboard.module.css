@@ -15,6 +15,51 @@
   font-size: 0.75rem;
 }
 
+.scheduleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.scheduleTitle {
+  margin: 0;
+}
+
+.splitModeButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.splitModeButton {
+  padding: 0.25rem 0.75rem;
+  background-color: transparent;
+  color: #e1e1e1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: normal;
+  transition: all 0.2s ease;
+}
+
+.splitModeButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.splitModeButton.active {
+  background-color: #7b34d3;
+  color: white;
+  border-color: #7b34d3;
+  font-weight: bold;
+}
+
+.splitModeButton.active:hover {
+  background-color: #6b2cc3;
+  border-color: #6b2cc3;
+}
+
 
 .lastUpdate {
   margin-left: auto;
