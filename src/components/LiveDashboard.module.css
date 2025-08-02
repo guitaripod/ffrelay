@@ -674,4 +674,30 @@
     font-size: 0.6rem;
     padding: 0.2rem;
   }
+  
+  .scheduleControls {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  
+  .expandButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .expandAllButton {
+    width: 100%;
+  }
+  
+  .splitModeButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .splitModeButton {
+    width: 100%;
+  }
 }
