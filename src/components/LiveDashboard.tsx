@@ -299,6 +299,31 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
       localStorage.setItem('splitMode', mode);
     }
   };
+
+  const expandAll = () => {
+    const gamesWithSplits = unifiedSchedule.filter(item => {
+      const subSplits = item.splits?.filter(s => s.type === 'split') || [];
+      return subSplits.length > 0;
+    });
+    
+    const allGameNames = gamesWithSplits.map(item => item.game);
+    setExpandedGames(new Set(allGameNames));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('expandedGames', JSON.stringify(allGameNames));
+    }
+    setUnifiedSchedule(unifiedSchedule.map(item => ({
+      ...item,
+      isExpanded: allGameNames.includes(item.game)
+    })));
+  };
+
+  const collapseAll = () => {
+    setExpandedGames(new Set());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('expandedGames', JSON.stringify([]));
+    }
+    setUnifiedSchedule(unifiedSchedule.map(item => ({ ...item, isExpanded: false })));
+  };
   
   const formatTimeWithoutSeconds = (timeStr: string): string => {
     if (!timeStr || timeStr === '-') return '-';
