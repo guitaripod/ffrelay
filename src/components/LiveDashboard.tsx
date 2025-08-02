@@ -84,19 +84,17 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     }
     return new Set();
   });
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchAllEventData();
       
-      
-      const parsedRuns = parseRunData(data.info);
+          const parsedRuns = parseRunData(data.info);
       const parsedSchedule = parseScheduleData(data.schedule);
       const parsedSplits = parseSplitsData(data.splits);
       
-      
       const normalizeGameName = (name: string): string => {
-        // Remove parenthetical content (categories, versions, etc.)
         let normalized = name.replace(/\s*\([^)]*\)/g, '').trim();
         
         const romanToArabic: Record<string, string> = {
@@ -115,10 +113,8 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         return normalized;
       };
       
-      
       const unified: UnifiedScheduleItem[] = parsedSchedule.map((scheduleItem, index) => {
         const run = parsedRuns.find(r => r.game === scheduleItem.game);
-        
         
         let gameData = parsedSplits.find(s => {
           if (s.type !== 'game') return false;
@@ -174,16 +170,9 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
               if (s.type !== 'game') return false;
               return possibleNames.some(name => s.name === name || s.name.includes(name));
             });
-            if (gameData) {
-            }
           }
-        }
         
         const gameSplits = gameData ? [gameData, ...(gameData.splits || [])] : [];
-        
-        if (!gameData) {
-        } else {
-        }
         
         return {
           ...scheduleItem,
@@ -197,25 +186,27 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         };
       });
       
-      const completedGames = parsedSplits
-        .filter(s => s.type === 'game' && s.mogSplit && s.chocoSplit && s.tonberrySplit)
-        .map(s => s.name);
-      
-      const currentIndex = unified.findIndex(item => {
-        if (completedGames.includes(item.game)) return false;
+      const currentIndex = unified.findIndex((item) => {
+        const gameSplit = item.splits?.find(s => s.type === 'game');
+        if (!gameSplit) return true; // No splits data yet
         
-        const normalizedScheduleName = normalizeGameName(item.game);
-        const isCompleted = completedGames.some(completedGame => {
-          const normalizedCompletedName = normalizeGameName(completedGame);
-          return normalizedCompletedName === normalizedScheduleName;
-        });
-        
-        return !isCompleted;
+        const hasAllTimes = gameSplit.mogTime && gameSplit.chocoTime && gameSplit.tonberryTime;
+        return !hasAllTimes;
       });
+      
+      let finalExpandedGames = new Set(expandedGames);
+      
+      if (currentIndex >= 0 && currentIndex < unified.length) {
+        finalExpandedGames.add(unified[currentIndex].game);
+      }
+      
+      if (isInitialLoad) {
+        setIsInitialLoad(false);
+      }
       
       const finalUnified = unified.map((item, index) => ({
         ...item,
-        isExpanded: expandedGames.has(item.game) || index === currentIndex
+        isExpanded: finalExpandedGames.has(item.game)
       }));
       
       setUnifiedSchedule(finalUnified);
@@ -237,13 +228,27 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
         document.body.classList.add('dashboard-loaded');
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
       setLoading(false);
       if (onLastUpdate) {
         onLastUpdate(null);
       }
     }
-  }, [onLastUpdate, expandedGames]);
+  }, [onLastUpdate, expandedGames, isInitialLoad]);
+
+  const isExcelError = (value: string): boolean => {
+    const excelErrors = ['#DIV/0!', '#REF!', '#VALUE!', '#NULL!', '#N/A', '#NUM!', '#NAME?'];
+    return excelErrors.includes(value);
+  };
+
+  const getSplitValue = (split: Split, team: 'mog' | 'choco' | 'tonberry'): string => {
+    if (splitMode === 'times') {
+      return team === 'mog' ? split.teamMog : team === 'choco' ? split.teamChoco : split.teamTonberry;
+    } else if (splitMode === 'splits') {
+      return team === 'mog' ? split.mogTime : team === 'choco' ? split.chocoTime : split.tonberryTime;
+    } else {
+      return team === 'mog' ? split.mogSplit : team === 'choco' ? split.chocoSplit : split.tonberrySplit;
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -254,6 +259,62 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
       clearInterval(interval);
     };
   }, [fetchData]);
+
+  useEffect(() => {
+    if (unifiedSchedule.length === 0 || currentGameIndex === -1) return;
+    
+    const currentGame = unifiedSchedule[currentGameIndex];
+    if (!currentGame) return;
+    
+    const gameSplit = currentGame.splits?.find(s => s.type === 'game');
+    const subSplits = currentGame.splits?.filter(s => s.type === 'split') || [];
+    
+    const allSplitsRecorded = gameSplit && 
+      gameSplit.mogTime && !isExcelError(gameSplit.mogTime) && gameSplit.mogTime !== '' &&
+      gameSplit.chocoTime && !isExcelError(gameSplit.chocoTime) && gameSplit.chocoTime !== '' &&
+      gameSplit.tonberryTime && !isExcelError(gameSplit.tonberryTime) && gameSplit.tonberryTime !== '' &&
+      subSplits.every(split => {
+        const mogValue = getSplitValue(split, 'mog');
+        const chocoValue = getSplitValue(split, 'choco');
+        const tonberryValue = getSplitValue(split, 'tonberry');
+        return mogValue && !isExcelError(mogValue) && mogValue !== '' &&
+               chocoValue && !isExcelError(chocoValue) && chocoValue !== '' &&
+               tonberryValue && !isExcelError(tonberryValue) && tonberryValue !== '';
+      });
+    
+    if (allSplitsRecorded) {
+      const nextIndex = unifiedSchedule.findIndex((item, index) => {
+        if (index <= currentGameIndex) return false;
+        
+        const gameSplit = item.splits?.find(s => s.type === 'game');
+        const hasTime = gameSplit && (
+          (gameSplit.mogTime && gameSplit.mogTime !== '') ||
+          (gameSplit.chocoTime && gameSplit.chocoTime !== '') ||
+          (gameSplit.tonberryTime && gameSplit.tonberryTime !== '')
+        );
+        
+        return !hasTime;
+      });
+      
+      if (nextIndex !== -1 && nextIndex !== currentGameIndex) {
+        setCurrentGameIndex(nextIndex);
+        
+        const newCurrentGame = unifiedSchedule[nextIndex];
+        if (newCurrentGame && !expandedGames.has(newCurrentGame.game)) {
+          const newExpandedGames = new Set(expandedGames);
+          newExpandedGames.add(newCurrentGame.game);
+          setExpandedGames(newExpandedGames);
+          
+          const updatedSchedule = unifiedSchedule.map((item, index) => ({
+            ...item,
+            isExpanded: newExpandedGames.has(item.game) || index === nextIndex
+          }));
+          setUnifiedSchedule(updatedSchedule);
+        }
+      }
+    }
+  }, [unifiedSchedule, currentGameIndex, splitMode, expandedGames]);
+
 
   const calculateTeamTotals = () => {
     const totals = {
@@ -343,11 +404,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     return 0;
   };
 
-  const isExcelError = (value: string): boolean => {
-    const excelErrors = ['#DIV/0!', '#REF!', '#VALUE!', '#NULL!', '#N/A', '#NUM!', '#NAME?'];
-    return excelErrors.includes(value);
-  };
-
   const cleanExcelValue = (value: string, showEmptyAsDash: boolean = true): string => {
     if (isExcelError(value)) {
       return showEmptyAsDash ? '-' : '';
@@ -363,16 +419,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const getSplitValue = (split: Split, team: 'mog' | 'choco' | 'tonberry'): string => {
-    if (splitMode === 'times') {
-      return team === 'mog' ? split.teamMog : team === 'choco' ? split.teamChoco : split.teamTonberry;
-    } else if (splitMode === 'splits') {
-      return team === 'mog' ? split.mogTime : team === 'choco' ? split.chocoTime : split.tonberryTime;
-    } else {
-      return team === 'mog' ? split.mogSplit : team === 'choco' ? split.chocoSplit : split.tonberrySplit;
-    }
   };
 
   const teamTotals = calculateTeamTotals();
@@ -449,7 +495,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     );
   }
 
-  // Prepare timeline data
   const timelineGames = unifiedSchedule.map((item, index) => {
     const gameSplit = item.splits?.find(s => s.type === 'game');
     const hasTime = gameSplit && (
@@ -465,7 +510,6 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
     };
   });
 
-  // Calculate total progress
   const completedGames = timelineGames.filter(g => g.completed).length;
   const totalProgress = unifiedSchedule.length > 0 
     ? (completedGames / unifiedSchedule.length) * 100 
