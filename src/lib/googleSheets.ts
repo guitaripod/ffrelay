@@ -59,17 +59,9 @@ async function fetchSheetData(sheetId: string, range: string = 'A1:Z1000'): Prom
     }
     const data = await response.json();
     
-    if (range.includes('Live Splits')) {
-      console.log(`fetchSheetData: Fetched ${range}, rows: ${data.values?.length || 0}`);
-      if (data.values && data.values.length > 0) {
-        console.log('fetchSheetData: First row of Live Splits:', data.values[0]);
-        console.log('fetchSheetData: Sample data row (if available):', data.values[1]);
-      }
-    }
     
     return data;
   } catch (error) {
-    console.error('Error fetching sheet data:', error);
     return { values: [] };
   }
 }
@@ -423,7 +415,6 @@ export async function fetchAllEventData(): Promise<EventData> {
         }
       };
     } catch (error) {
-      console.error(`Error fetching data for ${name}:`, error);
       return {
         name,
         url: `https://docs.google.com/spreadsheets/d/${sheetId}`,
@@ -516,39 +507,24 @@ export function parseSplitsData(splits: string[][]): ExpandedSplit[] {
   const splitsData: ExpandedSplit[] = [];
   let pendingSplits: ExpandedSplit[] = []; // Accumulate splits until we find a game row
   
-  console.log('parseSplitsData: Total rows received:', splits.length);
-  if (splits.length > 0) {
-    console.log('parseSplitsData: First 5 rows:', splits.slice(0, 5));
-  }
-  
   // Find the header row that contains 'Name' or 'Split Name'
   let headerRow = -1;
   for (let i = 0; i < Math.min(20, splits.length); i++) {
-    console.log(`parseSplitsData: Row ${i}:`, splits[i]?.[0], splits[i]?.[1], splits[i]?.[2]);
     if (splits[i] && (splits[i][0] === 'Name' || splits[i][0] === 'Split Name')) {
       headerRow = i;
-      console.log('parseSplitsData: Found header row at index:', headerRow);
-      console.log('parseSplitsData: Header row content:', splits[i]);
       break;
     }
   }
   
   if (headerRow === -1) {
-    console.error('parseSplitsData: Could not find header row in splits data');
-    console.error('parseSplitsData: Looking for row with first cell = "Name" or "Split Name"');
     return [];
   }
-  
-  
-  console.log('parseSplitsData: Starting to parse data rows from index:', headerRow + 1);
   
   for (let i = headerRow + 1; i < splits.length; i++) {
     const row = splits[i];
     if (!row || !row[0] || row[0].trim() === '') continue;
     
     const name = row[0].trim();
-    
-    console.log(`parseSplitsData: Row ${i} - Name: "${name}", Runners: [${row[2]}, ${row[3]}, ${row[4]}], Times: [${row[6]}, ${row[7]}, ${row[8]}]`);
     
     // Detect if this row represents a game (not a split within a game)
     const isGameRow = name.includes('Final Fantasy') || 
@@ -563,8 +539,6 @@ export function parseSplitsData(splits: string[][]): ExpandedSplit[] {
                       name.includes('World of Final Fantasy');
     
     if (isGameRow) {
-      console.log('parseSplitsData: Found game row:', name);
-      
       const currentGame: ExpandedSplit = {
         type: 'game',
         name: name,
@@ -584,12 +558,9 @@ export function parseSplitsData(splits: string[][]): ExpandedSplit[] {
         tonberrySegment: row[16] || ''
       };
       
-      console.log(`parseSplitsData: Game "${name}" has ${pendingSplits.length} splits`);
       splitsData.push(currentGame);
-      
       pendingSplits = [];
     } else {
-      console.log(`parseSplitsData: Found split "${name}", adding to pending splits`);
       const split: ExpandedSplit = {
         type: 'split',
         name: name,
@@ -610,16 +581,6 @@ export function parseSplitsData(splits: string[][]): ExpandedSplit[] {
       pendingSplits.push(split);
     }
   }
-  
-  if (pendingSplits.length > 0 && splitsData.length > 0) {
-    console.log('parseSplitsData: Leftover splits:', pendingSplits.length);
-  }
-  
-  console.log('parseSplitsData: Total games found:', splitsData.length);
-  console.log('parseSplitsData: Games:', splitsData.map(g => g.name));
-  splitsData.forEach(game => {
-    console.log(`parseSplitsData: Game "${game.name}" has ${game.splits?.length || 0} splits`);
-  });
   
   return splitsData;
 }
