@@ -501,25 +501,41 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
       <div className={`${styles.compactTable} ${styles.unifiedTable}`}>
         <div className={styles.scheduleHeader}>
           <h4 className={styles.scheduleTitle}>SCHEDULE</h4>
-          <div className={styles.splitModeButtons}>
-            <button
-              onClick={() => handleSplitModeChange('times')}
-              className={`${styles.splitModeButton} ${splitMode === 'times' ? styles.active : ''}`}
-            >
-              Split Times
-            </button>
-            <button
-              onClick={() => handleSplitModeChange('splits')}
-              className={`${styles.splitModeButton} ${splitMode === 'splits' ? styles.active : ''}`}
-            >
-              Splits by Game
-            </button>
-            <button
-              onClick={() => handleSplitModeChange('segments')}
-              className={`${styles.splitModeButton} ${splitMode === 'segments' ? styles.active : ''}`}
-            >
-              Segment Times
-            </button>
+          <div className={styles.scheduleControls}>
+            <div className={styles.expandButtons}>
+              <button
+                onClick={expandAll}
+                className={styles.expandAllButton}
+              >
+                Expand All
+              </button>
+              <button
+                onClick={collapseAll}
+                className={styles.expandAllButton}
+              >
+                Collapse All
+              </button>
+            </div>
+            <div className={styles.splitModeButtons}>
+              <button
+                onClick={() => handleSplitModeChange('times')}
+                className={`${styles.splitModeButton} ${splitMode === 'times' ? styles.active : ''}`}
+              >
+                Split Times
+              </button>
+              <button
+                onClick={() => handleSplitModeChange('splits')}
+                className={`${styles.splitModeButton} ${splitMode === 'splits' ? styles.active : ''}`}
+              >
+                Splits by Game
+              </button>
+              <button
+                onClick={() => handleSplitModeChange('segments')}
+                className={`${styles.splitModeButton} ${splitMode === 'segments' ? styles.active : ''}`}
+              >
+                Segment Times
+              </button>
+            </div>
           </div>
         </div>
         <table>
