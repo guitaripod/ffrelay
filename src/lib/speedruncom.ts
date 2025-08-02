@@ -80,14 +80,12 @@ export async function fetchRunnerProfile(runnerName: string): Promise<RunnerProf
     const response = await rateLimitedFetch(searchUrl);
     
     if (!response.ok) {
-      console.error(`Failed to fetch runner profile for ${runnerName}: ${response.statusText}`);
       return null;
     }
     
     const data = await response.json();
     
     if (!data.data || data.data.length === 0) {
-      console.log(`No profile found for runner: ${runnerName}`);
       const profile: RunnerProfile = { name: runnerName };
       runnerCache.set(runnerName, profile);
       return profile;
@@ -112,7 +110,6 @@ export async function fetchRunnerProfile(runnerName: string): Promise<RunnerProf
     
     return profile;
   } catch (error) {
-    console.error(`Error fetching runner profile for ${runnerName}:`, error);
     const profile: RunnerProfile = { name: runnerName };
     runnerCache.set(runnerName, profile);
     return profile;
