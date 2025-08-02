@@ -24,7 +24,6 @@ export default function PastEventDisplay({ name, sheetId }: PastEventProps) {
         setEventData(data);
         setLoading(false);
       }).catch(err => {
-        console.error(`Error loading ${name}:`, err);
         setLoading(false);
       });
     }

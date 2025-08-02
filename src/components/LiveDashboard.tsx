@@ -171,6 +171,7 @@ export default function LiveDashboard({ onLastUpdate }: LiveDashboardProps) {
               return possibleNames.some(name => s.name === name || s.name.includes(name));
             });
           }
+        }
         
         const gameSplits = gameData ? [gameData, ...(gameData.splits || [])] : [];
         
