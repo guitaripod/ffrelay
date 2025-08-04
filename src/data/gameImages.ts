@@ -106,6 +106,7 @@ export function getGameImage(gameName: string): string {
     .replace(/\s*\(NMG Easy\)\s*/i, '')
     .replace(/\s*\(Easy\)\s*/i, '')
     .replace(/\s*\(No CC\)\s*/i, '')
+    .replace(/\s*\(PC No CC\)\s*/i, '')
     .replace(/\s*\(PSX\)\s*/i, '')
     .replace(/\s*\(NMG\)\s*/i, '')
     .replace(/\s*\(All Characters & Espers - Glitchless\)\s*/i, '')
